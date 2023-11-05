@@ -2,9 +2,6 @@ import React from 'react';
 import './Statistics.css'
 
 export const Statistics = ({ good, bad, neutral, total, percentage }) => {
-  if (total === 0) {
-    return <p>There is no feedback</p>;
-  }
   return (
     <div>
       <ul className='statistics'>

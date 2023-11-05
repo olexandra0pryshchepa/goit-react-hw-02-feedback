@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Section } from './Section/Section';
 import { Statistics } from './Statistics/Statistics';
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
+import { Notification } from './Notification/Notification';
 
 export class App extends Component {
   state = {
@@ -27,14 +28,14 @@ export class App extends Component {
     if (total === 0) {
       return 0;
     }
-    return (this.state.good / total) * 100;
+    const percentage = (this.state.good / total) * 100;
+    const roundedPercentage = percentage.toFixed(2);
+    return parseFloat(roundedPercentage);
   };
 
   render() {
-
     const total = this.countTotalFeedback();
     const percentage = this.countPositiveFeedbackPercentage();
-
     return (
       <div>
         <Section title="Please level feedback">
@@ -45,15 +46,21 @@ export class App extends Component {
         </Section>
 
         <Section title="Statictics">
-          <Statistics
-            good={this.state.good}
-            bad={this.state.bad}
-            neutral={this.state.neutral}
-            total={total}
-            percentage={percentage}
-          />
+          {this.state.good !== 0 ||
+          this.state.neutral !== 0 ||
+          this.state.bad !== 0 ? (
+            <Statistics
+              good={this.state.good}
+              bad={this.state.bad}
+              neutral={this.state.neutral}
+              total={total}
+              percentage={percentage}
+            />
+          ) : (
+            <Notification message="There is no feedback!" />
+          )}
         </Section>
       </div>
     );
   }
-}
+};
